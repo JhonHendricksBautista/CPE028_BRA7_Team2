@@ -59,9 +59,23 @@ connection_icon = get_image_base64(CONNECTION_PATH)
 st.markdown("""
 <style>
 
-/* -----------------------------------------------
-   MAIN TITLE
------------------------------------------------- */
+:root {
+    --background: #1F2937;
+    --sidebar: #24262F;
+    --card: #161b22;
+    --card-border: #404040;
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    --light_green: #90EE90;
+    --white: #FFFFFF;
+    --text-dark: #FFFFFF;
+    --text-secondary: #FFFFFF;
+    --text-muted: #B8C0CC;
+}
+
+.stApp {
+    background-color: var(--background);
+}
 
 .main-title {
     display: flex;
@@ -69,6 +83,7 @@ st.markdown("""
     gap: 10px;
     font-size: 32px;
     font-weight: 700;
+    color: var(--text-dark);
 }
 
 .title-icon {
@@ -77,20 +92,10 @@ st.markdown("""
     object-fit: contain;
 }
 
-
-/* -----------------------------------------------
-   SUBTITLE
------------------------------------------------- */
-
 .subtitle {
-    color: #8b949e;
+    color: var(--text-secondary);
     font-size: 16px;
 }
-
-
-/* -----------------------------------------------
-   SECTION HEADER
------------------------------------------------- */
 
 .section-header {
     display: flex;
@@ -100,6 +105,7 @@ st.markdown("""
     font-weight: 600;
     margin-top: 10px;
     margin-bottom: 10px;
+    color: var(--text-dark);
 }
 
 .section-icon {
@@ -108,10 +114,9 @@ st.markdown("""
     object-fit: contain;
 }
 
-
-/* -----------------------------------------------
-   SIDEBAR TITLE
------------------------------------------------- */
+section[data-testid="stSidebar"] {
+    background-color: var(--sidebar);
+}
 
 .sidebar-title {
     display: flex;
@@ -120,51 +125,83 @@ st.markdown("""
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 15px;
+    color: var(--white);
 }
 
 .sidebar-icon {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
+}
+
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] span {
+    color: #E5E7EB !important;
 }
 
 .search-button-container {
     height: 28px;
 }
 
-
-/* -----------------------------------------------
-   IP CARD
------------------------------------------------- */
-
 .ip-card {
-    background-color: #161b22;
-    border: 1px solid #30363d;
+    background-color: var(--card);
+    border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 15px;
 }
 
 .ip-label {
-    color: #8b949e;
+    color: var(--text-muted);
     font-size: 14px;
 }
 
 .ip-value {
+    color: var(--light_green);
     font-size: 24px;
     font-weight: 600;
 }
-
-
-/* -----------------------------------------------
-   SECTION TITLE
------------------------------------------------- */
 
 .section-title {
     font-size: 20px;
     font-weight: 600;
     margin-top: 20px;
     margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.stApp p,
+.stApp label {
+    color: var(--text-dark);
+}
+
+.stTextInput input {
+    background-color: #161b22;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+}
+
+.stTextInput input::placeholder {
+    color: #6B7280;
+}
+
+.stButton button {
+    background-color: var(--primary);
+    color: var(--white);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.stButton button:hover {
+    background-color: var(--primary-hover);
+    color: var(--white);
+}
+
+hr {
+    border-color: #AAAAAA;
 }
 
 </style>
@@ -471,7 +508,8 @@ elif selection == "Search IP":
                 st.error(f"Unable to fetch IP information: {e}")
                 st.stop()
 
-            fetched_ip_data =  st.session_state.target_ip_data
+            fetched_ip_data = st.session_state.target_ip_data
+
             # ------------------------------------------
             # API FUNCTION WILL BE IMPLEMENTED HERE
             # ------------------------------------------
@@ -501,10 +539,11 @@ elif selection == "Search IP":
             timezone = fetched_ip_data.get('timezone','N/A')
             postal = fetched_ip_data.get('postal','N/A')
 
-            st.markdown(
-                '<div class="section-title">IP Information</div>',
-                unsafe_allow_html=True
-            )
+            st.markdown(f"""
+    <div class="section-header">
+        <img src="data:image/png;base64,{information_icon}" class="section-icon">
+        <span>Network Information</span>
+    </div>  """, unsafe_allow_html=True)
 
             col1, col2 = st.columns(2)
 
